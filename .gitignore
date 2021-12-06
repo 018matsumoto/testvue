@@ -21,3 +21,9 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Firebase
+.firebase
+
+# Other
+_memo_.txt
