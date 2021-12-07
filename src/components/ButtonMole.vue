@@ -1,25 +1,34 @@
 <template>
   <ul>
     <li v-for="(item, index) in list" :key="index">
-      <button-atom :to="item.to" :is-primary="item.primary" v-show="isShow(item.show, item.primary)">{{ item.label }}</button-atom>
+      <button-atom
+        :to="item.to"
+        :is-primary="item.primary"
+        v-show="isShow(item.show, item.primary)"
+      >{{ item.label }}</button-atom>
     </li>
   </ul>
 </template>
 
 <script lang="js">
 import ButtonAtom from "./ButtonAtom.vue";
+
 export default {
+  components: { ButtonAtom },
   name: "ButtonMole",
   props: ["inputValue", "list"],
-  components: { ButtonAtom },
-  methods: {
-    isShow(isShow, isPrimary) {
-      if (!isShow && isPrimary) {
-        return this.inputValue ? true : false
+  setup(props) {
+    const isShow = (show, primary) => {
+      if (!show && primary) {
+        return props.inputValue ? true : false
       }
-      return isShow
+      return show
     }
-  },
+
+    return {
+      isShow
+    }
+  }
 }
 </script>
 

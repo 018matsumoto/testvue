@@ -7,9 +7,15 @@
 </template>
 
 <script lang="js">
+import { inject } from "vue"
+
 export default {
   name: 'CommentAtom',
-  props: ['name', 'body', 'selectName']
+  props: ['name', 'body'],
+  setup() {
+    const selectName = inject('selectName')
+    return { selectName }
+  }
 }
 </script>
 

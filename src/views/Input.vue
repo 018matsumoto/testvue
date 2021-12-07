@@ -9,10 +9,14 @@
 </template>
 
 <script lang="js">
-import InputAtom from "../components/InputAtom.vue"
+import { reactive, toRefs } from "vue"
+import { onBeforeRouteLeave } from "vue-router"
 import TitleAtom from "../components/TitleAtom.vue"
+import InputAtom from "../components/InputAtom.vue"
 import ButtonMole from "../components/ButtonMole.vue"
+
 export default {
+  components: { InputAtom, TitleAtom, ButtonMole },
   name: "Input",
   props: {
     form: {
@@ -26,20 +30,23 @@ export default {
     }
   },
   emits: ["setForm"],
-  data() {
-    return {
-      name: this.form.name,
+  setup(props, context) {
+    const state = reactive({
+      name: props.form.name,
       buttons: [
         { label: '戻る', to: '/', primary: false, show: true },
         { label: '次へ', to: '/Select', primary: true, show: false }
       ]
+    })
+
+    onBeforeRouteLeave(() => {
+      context.emit('setForm', { name: state.name })
+    })
+
+    return {
+      ...toRefs(state)
     }
-  },
-  beforeRouteLeave(to, form, next) {
-    this.$emit("setForm", { name: this.name })
-    next()
-  },
-  components: { InputAtom, TitleAtom, ButtonMole }
+  }
 }
 </script>
 

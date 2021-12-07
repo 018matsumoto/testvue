@@ -1,22 +1,17 @@
 <template>
   <ul>
     <li v-if="isLoad === false">loading...</li>
-    <Comment-atom
-      v-for="item in list"
-      :key="item.id"
-      :name="item.name"
-      :body="item.body"
-      :select-name="selectName"
-    ></Comment-atom>
+    <Comment-atom v-for="item in list" :key="item.id" :name="item.name" :body="item.body"></Comment-atom>
   </ul>
 </template>
 
 <script lang="js">
 import CommentAtom from "./CommentAtom.vue";
+
 export default {
+  components: { CommentAtom },
   name: 'CommentMole',
-  props: ['list', 'selectName', 'isLoad'],
-  components: { CommentAtom }
+  props: ['list', 'isLoad']
 }
 </script>
 

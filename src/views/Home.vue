@@ -5,9 +5,11 @@
 </template>
 
 <script>
-import ButtonAtom from "../components/ButtonAtom.vue"
 import TitleAtom from "../components/TitleAtom.vue"
+import ButtonAtom from "../components/ButtonAtom.vue"
+
 export default {
+  components: { ButtonAtom, TitleAtom },
   name: "Home",
   props: {
     form: {
@@ -20,8 +22,7 @@ export default {
       }
     }
   },
-  emits: ["setForm"],
-  components: { ButtonAtom, TitleAtom }
+  emits: ["setForm"]
 }
 </script>
 

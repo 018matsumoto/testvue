@@ -9,10 +9,14 @@
 </template>
 
 <script lang="js">
+import { computed, reactive, toRefs } from "vue"
+import { onBeforeRouteLeave } from "vue-router"
 import TitleAtom from "../components/TitleAtom.vue"
 import SelectMole from "../components/SelectMole.vue"
 import ButtonMole from "../components/ButtonMole.vue"
+
 export default {
+  components: { TitleAtom, SelectMole, ButtonMole },
   name: "Select",
   props: {
     form: {
@@ -26,9 +30,9 @@ export default {
     }
   },
   emits: ["setForm"],
-  data() {
-    return {
-      select: this.form.select,
+  setup(props, { emit }) {
+    const state = reactive({
+      select: props.form.select,
       animals: [
         { label: '🐕', value: '1' },
         { label: '🐈', value: '2' }
@@ -37,18 +41,21 @@ export default {
         { label: '戻る', to: '/Input', primary: false, show: true },
         { label: '決定', to: '/Complete', primary: true, show: false }
       ]
-    };
-  },
-  computed: {
-    selectName() {
-      return this.animals.find(item => item.value === this.select)?.label
+    })
+
+    const selectName = computed(() => {
+      return state.animals.find(item => item.value === state.select)?.label
+    })
+
+    onBeforeRouteLeave(() => {
+      emit('setForm', { select: state.select })
+    })
+
+    return {
+      ...toRefs(state),
+      selectName
     }
-  },
-  beforeRouteLeave(to, form, next) {
-    this.$emit("setForm", { select: this.select })
-    next()
-  },
-  components: { TitleAtom, SelectMole, ButtonMole }
+  }
 }
 </script>
 

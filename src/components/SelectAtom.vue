@@ -6,23 +6,29 @@
 </template>
 
 <script lang="js">
+import { computed, reactive, toRefs } from "vue"
+
 export default {
   name: 'SelectAtom',
   props: ['modelValue', 'value', 'name'],
   emits: ['update:modelValue'],
-  data() {
+  setup(props, { emit }) {
+    const state = reactive({
+      id: props.name + props.value
+    })
+
+    const isCheck = computed(() => {
+      return props.value === props.modelValue
+    })
+
+    const select = (event) => {
+      emit('update:modelValue', event.target.value)
+    }
+
     return {
-      id: this.name + this.value
-    }
-  },
-  computed: {
-    isCheck() {
-      return this.value === this.modelValue
-    }
-  },
-  methods: {
-    select(event) {
-      this.$emit('update:modelValue', event.target.value)
+      ...toRefs(state),
+      isCheck,
+      select
     }
   }
 }

@@ -1,10 +1,5 @@
 <template>
-  <input
-    type="text"
-    :value="modelValue"
-    @input="setInput"
-    :placeholder="`${modelName}を入力してください。`"
-  />
+  <input type="text" :value="modelValue" @input="setInput" :placeholder="`${modelName}を入力してください。`" />
 </template>
 
 <script lang="js">
@@ -21,9 +16,13 @@ export default {
       }
     }
   },
-  methods: {
-    setInput(event) {
-      this.$emit('update:modelValue', event.target.value)
+  setup(_, { emit }) {
+    const setInput = (event) => {
+      emit('update:modelValue', event.target.value)
+    }
+
+    return {
+      setInput
     }
   }
 }

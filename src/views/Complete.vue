@@ -5,15 +5,19 @@
     <span class="big">『{{ selectName }}派』</span>ですが、
     <br />皆さんはどうでしょう？
   </p>
-  <comment-mole :list="list" :select-name="selectName" :is-load="isLoad"></comment-mole>
+  <comment-mole :list="list" :is-load="isLoad"></comment-mole>
   <button-atom to="/" :is-primary="true">終了</button-atom>
 </template>
 
 <script lang="js">
+import { computed, reactive, toRefs, onMounted, provide } from "vue"
+import { onBeforeRouteLeave } from "vue-router"
 import TitleAtom from "../components/TitleAtom.vue"
-import ButtonAtom from "../components/ButtonAtom.vue"
 import CommentMole from "../components/CommentMole.vue"
+import ButtonAtom from "../components/ButtonAtom.vue"
+
 export default {
+  components: { TitleAtom, ButtonAtom, CommentMole },
   name: "Complete",
   props: {
     form: {
@@ -27,29 +31,35 @@ export default {
     }
   },
   emits: ["setForm"],
-  data() {
-    return {
-      name: this.form.name,
-      select: this.form.select,
+  setup(props, { emit }) {
+    const state = reactive({
+      name: props.form.name,
+      select: props.form.select,
       list: null,
       isLoad: false
+    })
+
+    const selectName = computed(() => {
+      return state.select === "1" ? "🐕" : "🐈"
+    })
+
+    provide('selectName', selectName.value)
+
+    onMounted(async () => {
+      const data = await fetch("https://jsonplaceholder.typicode.com/comments").then(res => res.json())
+      state.list = data.slice(0, 10)
+      state.isLoad = true
+    })
+
+    onBeforeRouteLeave(() => {
+      emit('setForm', { name: null, select: null })
+    })
+
+    return {
+      ...toRefs(state),
+      selectName
     }
-  },
-  async mounted() {
-    const data = await fetch("https://jsonplaceholder.typicode.com/comments").then(res => res.json())
-    this.list = data.slice(0, 10)
-    this.isLoad = true
-  },
-  computed: {
-    selectName() {
-      return this.select === "1" ? "🐕" : "🐈"
-    }
-  },
-  beforeRouteLeave(to, form, next) {
-    this.$emit("setForm", { name: null, select: null })
-    next()
-  },
-  components: { TitleAtom, ButtonAtom, CommentMole }
+  }
 }
 </script>
 

@@ -13,16 +13,21 @@
 
 <script lang="js">
 import SelectAtom from "./SelectAtom.vue"
+
 export default {
+  components: { SelectAtom },
   name: "SelectMole",
   props: ["modelValue", "list", "name"],
   emits: ["update:modelValue"],
-  methods: {
-    select(event) {
-      this.$emit("update:modelValue", event);
+  setup(_, { emit }) {
+    const select = (event) => {
+      emit("update:modelValue", event)
     }
-  },
-  components: { SelectAtom }
+
+    return {
+      select
+    }
+  }
 }
 </script>
 

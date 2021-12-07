@@ -9,19 +9,23 @@
 </template>
 
 <script>
+import { reactive } from "vue"
+
 export default {
   name: 'App',
-  data() {
-    return {
-      form:{
-        name: null,
-        select: null
-      }
+  setup() {
+    const form = reactive({
+      name: null,
+      select: null
+    })
+
+    const setForm = (input) => {
+      Object.assign(form, input)
     }
-  },
-  methods: {
-    setForm(form) {
-      this.form = Object.assign(this.form, form)
+
+    return {
+      form,
+      setForm
     }
   }
 }
