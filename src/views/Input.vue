@@ -4,7 +4,7 @@
     アナタは
     <span class="big">『{{ name }}』</span>ですね？
   </p>
-  <input-atom v-model="name" model-name="おにゃまえ"></input-atom>
+  <input-atom v-model="name" model-name="お名前"></input-atom>
   <button-mole :list="buttons" :input-value="name"></button-mole>
 </template>
 
