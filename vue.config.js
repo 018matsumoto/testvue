@@ -3,5 +3,6 @@ module.exports = {
     devtool: 'source-map',
   },
   outputDir: 'docs',
+  assetsDir: './',
   publicPath: './',
 }
